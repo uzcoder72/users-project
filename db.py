@@ -9,7 +9,7 @@ conn = psycopg2.connect(database='n47',
 
 cur = conn.cursor()
 
-create_users_table = """create table users(
+create_users_table = """create table if not exists users(
     id serial primary key ,
     username varchar(100) not null unique ,
     password varchar(255) not null ,
@@ -19,7 +19,7 @@ create_users_table = """create table users(
 );
 """
 
-create_todos_table = """create table todos(
+create_todos_table = """create table if not exists todos(
     id serial PRIMARY KEY,
     name varchar(100) not null ,
     todo_type varchar(15) not null,
@@ -37,7 +37,8 @@ def create_table():
 def migrate():
     insert_into_users = """
     insert into users (username, password, role, status,login_try_count) 
-    values ('admin','123','SUPERADMIN','ACTIVE',0);
+    values ('admin','123','SUPERADMIN','ACTIVE',0),
+    ('john','admin123','admin','ACTIVE',0);
 
     """
     cur.execute(insert_into_users)
